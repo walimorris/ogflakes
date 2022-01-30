@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>OGFlakes</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>Upload new Photo</h1>
+<form method="POST" action="/ogcereal/add" enctype="multipart/form-data">
+    Name:<input type="text" name="name" />
+    Image:<input type="file" name="image" accept="image/*" />
+    <input type="submit" value="Upload" />
+</form>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>OGFlakes Showcase</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/showcase.css">
+</head>
+<body>
+<div class="bills" th:unless="${#lists.isEmpty(ogFlakesList)}">
+    <h2>Showcase</h2>
+    <div th:each="cereal : ${ogFlakesList}">
+        <div th:if="${cereal.getIsValidated()}">
+            <p class="cerealName" th:text="${cereal.getName}"></p>
+            <div id="container">
+                <div class="cerealImageContainer">
+                    <img th:alt="${cereal.getImage()}" th:src="'data:image/png;base64,' + ${cereal.getImage()}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+.cerealName {
+    text-align: center;
+    background-color: aquamarine;
+}
+
+#container {
+    width: 500px;
+    height: 300px;
+    display: table;
+    margin: auto;
+    background-color: aqua;
+}
+
+#container .cerealImageContainer {
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+#container .cerealImageContainer img {
+    max-width: 500px;
+    max-height: 300px;
+}
