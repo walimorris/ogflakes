@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/showcase.css">
 </head>
 <body>
-<div class="bills" th:unless="${#lists.isEmpty(ogFlakesList)}">
+<div th:unless="${#lists.isEmpty(ogFlakesList)}">
     <h2>Showcase</h2>
     <div th:each="cereal : ${ogFlakesList}">
         <div th:if="${cereal.getIsValidated()}">
