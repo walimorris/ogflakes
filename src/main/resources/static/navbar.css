@@ -1,0 +1,42 @@
+.ogNavbar ul {
+    background-color: #F7DE3A;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.ogNavbar li {
+    float: left;
+}
+
+.ogNavbar a {
+    display: block;
+    color: #111;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.ogNavbar a:hover {
+    text-decoration: underline;
+    color: #111!important;
+}
+
+.ogNavbar img {
+    display: block;
+    text-align: center;
+    padding: 14px 16px;
+    width: 140px;
+    height: 25px;
+}
+
+#showcase_searchbar {
+    padding: 14px 16px;
+    float: right;
+}
+
+#showcase_searchbar input {
+    border-radius: 25px;
+    background-color: #ececec;
+}

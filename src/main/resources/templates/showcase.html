@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>OGFlakes Showcase</title>
@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="/showcase.css">
 </head>
 <body>
+<div th:replace="fragments/navbar"></div>
 <div th:unless="${#lists.isEmpty(ogFlakesList)}">
-    <h2>Showcase</h2>
     <div th:each="cereal : ${ogFlakesList}">
         <div th:if="${cereal.getIsValidated()}">
             <p class="cerealName" th:text="${cereal.getName}"></p>

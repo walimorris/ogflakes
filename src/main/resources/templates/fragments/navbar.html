@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/navbar.css">
+</head>
+<script>
+    function clearSearchQuery() {
+        document.getElementById('query').value='';
+    }
+</script>
+<nav class="ogNavbar">
+    <ul>
+        <li><img alt="ogflakes logo" src="/images/OGFlakes_transparent.png"></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/ogcereal/upload">Upload</a></li>
+        <li><a href="/ogcereal/showcase">Showcase</a></li>
+        <form action="/ogcereal/showcase" method="get" id="showcase_searchbar" th:if="${#strings.contains(#httpServletRequest.requestURI, 'showcase')}">
+            <input type="search" id="query" name="q" placeholder="Search...">
+            <button type="submit">Search</button>
+        </form>
+    </ul>
+</nav>

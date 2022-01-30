@@ -3,6 +3,7 @@ package com.morris.ogflakes.controller;
 import com.morris.ogflakes.model.OgCereal;
 import com.morris.ogflakes.repository.OgCerealRepository;
 import com.morris.ogflakes.service.OgCerealService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -29,15 +31,29 @@ public class OgCerealController {
         this.ogCerealRepository = cerealRepository;
     }
 
-    @GetMapping("/ogcereal")
+    @GetMapping("/ogcereal/upload")
     public String getOgCerealPage() {
         return "ogcerealLandingPage";
     }
 
 
     @GetMapping("/ogcereal/showcase")
-    public String getOgCereal(Model model) {
-        model.addAttribute("ogFlakesList", ogCerealRepository.findAll());
+    public String getOgCereal(@RequestParam(value = "q", required = false) String query, Model model) {
+        if (StringUtils.isNotEmpty(query)) {
+
+            // search both upper and lowercase query with regex and return greatest results list
+            if (StringUtils.isAllLowerCase(query.substring(0,1))) {
+                query = StringUtils.join(query.substring(0,1).toUpperCase(), query.substring(1));
+            }
+            List<OgCereal> upperCaseQueryResultsList = ogCerealRepository.findByNameRegex(query);
+            List<OgCereal> lowerCaseQueryResultsList = ogCerealRepository.findByNameRegex(StringUtils.lowerCase(query));
+            List<OgCereal> maxQueryResultsList = upperCaseQueryResultsList.size() > lowerCaseQueryResultsList.size() ?
+                    upperCaseQueryResultsList : lowerCaseQueryResultsList;
+
+            model.addAttribute("ogFlakesList", maxQueryResultsList);
+        } else {
+            model.addAttribute("ogFlakesList", ogCerealRepository.findAll());
+        }
         return "showcase";
     }
 
