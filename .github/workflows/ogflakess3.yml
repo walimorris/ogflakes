@@ -9,10 +9,11 @@ on:
 
 # Allows you to run this workflow manually from the Actions tab
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: jakejarvis/s3-sync-action@v0.5.1
+      - uses: actions/checkout@master
+      - uses: jakejarvis/s3-sync-action@master
       with:
         args: --acl public-read --follow-symlinks --delete
       env:
