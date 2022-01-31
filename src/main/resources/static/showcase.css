@@ -1,23 +1,53 @@
-.cerealName {
-    text-align: center;
-    background-color: aquamarine;
+#highlightContainer {
+    width: 100vw;
 }
 
-#container {
-    width: 500px;
+#highlightContainer div {
+    float: left;
+    width: 33vw;
     height: 300px;
-    display: table;
-    margin: auto;
-    background-color: aqua;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    border-bottom: 2px dotted #d3d3d3;
 }
 
-#container .cerealImageContainer {
+#cerealImageContainer {
     text-align: center;
     vertical-align: middle;
-    display: table-cell;
+    line-height: 300px;
 }
 
-#container .cerealImageContainer img {
-    max-width: 500px;
+#cerealDescription {
+    text-align: center;
+}
+
+#cerealUpvote {
+    text-align: center;
+    vertical-align: middle;
+    line-height: 150px;
+}
+
+.uptick {
+    border: solid #969892;
+    border-width: 0 8px 8px 0;
+    display: inline-block;
+    padding: 8px;
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.uptick:hover {
+    cursor: pointer;
+}
+
+.uptickCount {
+    text-align: center;
+    vertical-align: top;
+    line-height: 1px;
+}
+
+#cerealBoxImage {
+    max-width: 200px;
     max-height: 300px;
+    box-shadow: 10px 10px 5px 12px #d3d3d3;
 }
