@@ -6,17 +6,6 @@
     <link rel="stylesheet" href="/showcase.css">
     <link rel="stylesheet" href="/navbar.css">
 </head>
-<script>
-    function callTickerUpdate(id) {
-        fetch('ogcereal/showcase/updateticker/' + id, {
-            method: 'PUT',
-            body: JSON.stringify({count: 2}),
-            headers: {
-                'Content-type': 'application/json;charset=UTF-8',
-            }
-        });
-    }
-</script>
 <body>
 <div th:replace="fragments/navbar"></div>
 <div th:unless="${#lists.isEmpty(ogFlakesList)}">
@@ -31,7 +20,10 @@
                     <img id="cerealBoxImage" th:alt="${cereal.getImage}" th:src="'data:image/png;base64,' + ${cereal.getImage()}"/>
                 </div>
                 <div id="cerealUpvote">
-                    <i class="uptick" th:attr="onclick='callTickerUpdate(\'' + ${cereal.getId} + '\');'"></i>
+                    <form th:action="@{|/ogcereal/showcase/updateticker?id=${cereal.getId}&count=${cereal.getCount + 1}|}" method="post">
+                        <input type="hidden"/>
+                        <button style="background: transparent; outline: none; border: none;" type="submit" value="put"><i class="uptick"></i></button>
+                    </form>
                     <h2 id="uptickCountId" class="uptickCount" th:text="${cereal.getCount}"></h2>
                 </div>
                 <br style="clear: left;"/>
