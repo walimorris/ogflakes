@@ -32,7 +32,7 @@ public class OgCerealController {
 
     @GetMapping("/upload")
     public String getOgCerealPage() {
-        return "ogcerealLandingPage";
+        return "contribute";
     }
 
 

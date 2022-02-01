@@ -12,7 +12,7 @@
         <li><a href="/ogcereal/showcase">Showcase</a></li>
         <form action="/ogcereal/showcase" method="get" id="showcase_searchbar" th:if="${#strings.contains(#httpServletRequest.requestURI, 'showcase')}">
             <input class="showcase_searchbar_input" type="search" id="query" name="q" placeholder="Search...">
-            <button type="submit">Search</button>
+            <button class="ogcereal_searchbutton" type="submit">Search</button>
         </form>
     </ul>
 </nav>
