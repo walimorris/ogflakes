@@ -3,15 +3,23 @@
 <head>
     <title>OG Contribute</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/contribute.css">
 </head>
 <body>
 <div th:replace="fragments/navbar"></div>
 <h1>Upload new Photo</h1>
 <form method="POST" action="/ogcereal/add" enctype="multipart/form-data">
-    Name:<input type="text" name="name" />
-    Image:<input type="file" name="image" accept="image/*" />
+    Name:<input maxlength="20" required="required" type="text" name="name" />
+    <div class="dropzone">
+        <span class="dropzone_select">Drop cereals here or click to upload</span>
+        <input class="dropzone_input" required="required" type="file" name="image" accept="image/*" />
+    </div>
+    <label>
+        <textarea required="required" maxlength="600" rows="4" cols="50" name="description"></textarea>
+    </label>
     <input type="submit" value="Upload" />
 </form>
 
+<script src="/javascripts/imagedrops.js"></script>
 </body>
 </html>

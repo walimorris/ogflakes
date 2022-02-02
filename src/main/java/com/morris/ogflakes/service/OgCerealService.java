@@ -21,8 +21,8 @@ public class OgCerealService  {
     @Autowired
     private OgCerealRepository ogCerealRepository;
 
-    public void addOgCereal(String name, MultipartFile file) {
-        OgCereal ogCereal = new OgCereal(name);
+    public void addOgCereal(String name, String description, MultipartFile file) {
+        OgCereal ogCereal = new OgCereal(name, description);
         try {
             ogCereal.setImage(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
         } catch (IOException e) {

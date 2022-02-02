@@ -8,6 +8,12 @@
 </head>
 <body>
 <div th:replace="fragments/navbar"></div>
+<!-- message2 is not empty if message1 is also not empty, using message2 would be safe in this case
+     as they are created and meant to be together -->
+<div th:unless="${#strings.isEmpty(message1)}">
+    <p th:text="${message1}"></p>
+    <p th:text="${message2}"></p>
+</div>
 <div th:unless="${#lists.isEmpty(ogFlakesList)}">
     <div th:each="cereal : ${ogFlakesList}">
         <div th:if="${cereal.getIsValidated}">

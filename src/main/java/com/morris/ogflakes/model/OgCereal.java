@@ -17,9 +17,10 @@ public class OgCereal {
     private String description;
     private int count;
 
-    public OgCereal(String name) {
+    public OgCereal(String name, String description) {
         this.count = 1;
         this.name = name;
+        this.description = description;
     }
 
     public OgCereal() {}

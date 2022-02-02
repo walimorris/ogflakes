@@ -14,6 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @Controller
@@ -30,14 +33,15 @@ public class OgCerealController {
         this.ogCerealRepository = cerealRepository;
     }
 
-    @GetMapping("/upload")
+    @GetMapping("/contribute")
     public String getOgCerealPage() {
         return "contribute";
     }
 
 
     @GetMapping("/showcase")
-    public String getOgCereal(@RequestParam(value = "q", required = false) String query, Model model) {
+    public String getOgCereal(@RequestParam(value = "q", required = false) String query, Model model,
+                              HttpServletRequest request) {
         List<OgCereal> maxQueryResultsList;
         if (StringUtils.isNotEmpty(query)) {
 
@@ -62,6 +66,27 @@ public class OgCerealController {
             // return all cereal options, even when user submits empty query
             model.addAttribute("ogFlakesList", ogCerealRepository.findAll());
         }
+
+        // add contributor message if contributor cookie exists
+        boolean isContributor = false;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("contributor") && cookie.getValue().equals("true")) {
+                    isContributor = true;
+                    break;
+                }
+            }
+        }
+        if (isContributor) {
+            // add dynamic text on successful upload on showcase redirect
+            StringBuilder message1 = new StringBuilder();
+            StringBuilder message2 = new StringBuilder();
+            message1.append("You've contributed to OGFlakes, no worries there's no limit.");
+            message2.append("Either way, we appreciate the love!");
+            model.addAttribute("message1", message1);
+            model.addAttribute("message2", message2);
+        }
         return "showcase";
     }
 
@@ -72,15 +97,21 @@ public class OgCerealController {
         if (ogCereal.isPresent()) {
             logger.info("ogCereal is present: {}", ogCereal);
         }
-
         return "showcase";
     }
 
     @PostMapping("/add")
     public String postOgCereal(@RequestParam("name") String name, @RequestParam("image") MultipartFile image,
+                                 @RequestParam("description") String description, HttpServletResponse response,
                                  Model model) {
-        ogCerealService.addOgCereal(name, image);
-        // add dynamic text on successful upload on showcase redirect
+
+        ogCerealService.addOgCereal(name, description, image);
+
+        // add contributor cookie on successful cereal contribution
+        Cookie contributorCookie = new Cookie("contributor", "true");
+        contributorCookie.setMaxAge(7 * 24 * 60 * 60); // expire 7 days or until manual deletion
+        contributorCookie.setPath("/");
+        response.addCookie(contributorCookie);
         return "redirect:/ogcereal/showcase";
     }
 
