@@ -14,6 +14,9 @@
     <p th:text="${message1}"></p>
     <p th:text="${message2}"></p>
 </div>
+<div th:if="${results == 'empty'}">
+    <p> No Results &#129488; </p>
+</div>
 <div th:unless="${#lists.isEmpty(ogFlakesList)}">
     <div th:each="cereal : ${ogFlakesList}">
         <div th:if="${cereal.getIsValidated}">

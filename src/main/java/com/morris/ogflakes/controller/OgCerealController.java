@@ -63,7 +63,11 @@ public class OgCerealController {
             }
             model.addAttribute("ogFlakesList", maxQueryResultsList);
         } else {
-            // return all cereal options, even when user submits empty query
+            // return all cereal options, even when user submits empty query - DEBUG
+            List<OgCereal> ogCerealRepositoryAllList = ogCerealRepository.findAll();
+            if (ogCerealRepositoryAllList.isEmpty() || allResultsAreNotValidated(ogCerealRepositoryAllList)) {
+                model.addAttribute("results", "empty");
+            }
             model.addAttribute("ogFlakesList", ogCerealRepository.findAll());
         }
 
@@ -130,5 +134,25 @@ public class OgCerealController {
         // Do not add duplicates!
         Set<OgCereal> queryResultsSet = new HashSet<>(ListUtils.union(resultsList1, resultsList2));
         return new ArrayList<>(queryResultsSet);
+    }
+
+    /**
+     * If, minimum, 1 validated photo exists we return false because thymeleaf will act
+     * to render that one result on showcase page. We are checking if all results in the
+     * list are not validated. If we find that ALL results are not validated than we can
+     * communicate to the user that there are no results for its search.
+     *
+     * @param results {@link List<OgCereal>} results from repository search.
+     * @return boolean
+     */
+    private boolean allResultsAreNotValidated(List<OgCereal> results) {
+        boolean allNotValidated = true;
+        for (OgCereal cereal : results) {
+            if (cereal.getIsValidated()) {
+                allNotValidated = false;
+                break;
+            }
+        }
+        return allNotValidated;
     }
 }

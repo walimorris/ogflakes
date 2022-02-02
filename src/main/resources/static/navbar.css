@@ -34,14 +34,35 @@
 }
 
 #showcase_searchbar {
-    padding: 14px 16px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    padding-right: 16px;
     float: right;
 }
 
 .showcase_searchbar_input {
-    border-radius: 25px;
     border: none;
     height: 30px;
     width: 300px;
     background-color: #ececec;
+}
+
+.showcase_searchbar_input textarea:focus, :focus {
+    outline: none;
+}
+
+.showcase_searchbar_input ::placeholder {
+    color: #009578;
+}
+
+.ogcereal_searchbutton {
+    height: 30px;
+    width: 50px;
+    border: none;
+    background-color: #7b68ee;
+    margin-left: -25px;
+}
+
+.ogcereal_searchbutton :hover {
+    filter: brightness(60%);
 }
