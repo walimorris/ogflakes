@@ -158,7 +158,6 @@ public class OgCerealService  {
                 return false;
             }
         }
-        logger.info("All containing results from queries are not validated: {}", results);
         return true;
     }
 }
