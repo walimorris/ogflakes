@@ -141,9 +141,7 @@ public class OgCerealService  {
      * @return joined {@link List<OgCereal>} list.
      */
     private List<OgCereal> joinShowcaseQueryResultsLists(List<OgCereal> resultsList1, List<OgCereal>resultsList2) {
-        // Do not add duplicates!
-        Set<OgCereal> queryResultsSet = new HashSet<>(ListUtils.union(resultsList1, resultsList2));
-        return new ArrayList<>(queryResultsSet);
+        return new ArrayList<>(new HashSet<>(ListUtils.union(resultsList1, resultsList2)));
     }
 
     /**
