@@ -19,6 +19,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import javax.servlet.http.Cookie;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -128,8 +129,8 @@ class OgCerealServiceTest {
     there's no way to handle validation programmatically and this feature is sealed.
     */
     @Test
-    void isEmptyOrNonValidatedResults() {
-        assertTrue(ogCereals.isEmpty() || !allResultsAreValidated(ogCereals));
+    void isEmptyOrAllNonValidatedResults() {
+        assertTrue(ogCereals.isEmpty() || allResultsAreNotValidated(ogCereals));
     }
 
     @Test
@@ -169,9 +170,9 @@ class OgCerealServiceTest {
         return containsContributorCookie;
     }
 
-    private boolean allResultsAreValidated(List<OgCereal> results) {
+    private boolean allResultsAreNotValidated(List<OgCereal> results) {
         for (OgCereal cereal : results) {
-            if (!cereal.getIsValidated()) {
+            if (cereal.getIsValidated()) {
                 return false;
             }
         }

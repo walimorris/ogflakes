@@ -102,8 +102,8 @@ public class OgCerealService  {
      * @param results {@link List<OgCereal>} objects
      * @return boolean
      */
-    public boolean isEmptyOrNonValidatedResults(List<OgCereal> results) {
-        return (results.isEmpty() || !allResultsAreValidated(results));
+    public boolean isEmptyOrAllNonValidatedResults(List<OgCereal> results) {
+        return (results.isEmpty() || allResultsAreNotValidated(results));
     }
 
     /**
@@ -163,9 +163,9 @@ public class OgCerealService  {
      * @param results {@link List<OgCereal>} results from repository search.
      * @return boolean
      */
-    private boolean allResultsAreValidated(List<OgCereal> results) {
+    private boolean allResultsAreNotValidated(List<OgCereal> results) {
         for (OgCereal cereal : results) {
-            if (!cereal.getIsValidated()) {
+            if (cereal.getIsValidated()) {
                 return false;
             }
         }

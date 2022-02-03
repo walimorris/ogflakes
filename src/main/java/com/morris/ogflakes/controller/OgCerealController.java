@@ -49,7 +49,7 @@ public class OgCerealController {
         List<OgCereal> maxQueryResultsList;
         if (StringUtils.isNotEmpty(query)) {
             maxQueryResultsList = ogCerealService.getCaseOptimizedResultsList(query);
-            if (ogCerealService.isEmptyOrNonValidatedResults(maxQueryResultsList)) {
+            if (ogCerealService.isEmptyOrAllNonValidatedResults(maxQueryResultsList)) {
                 model.addAttribute(RESULTS, EMPTY);
             }
             model.addAttribute(OG_FLAKES_LIST, maxQueryResultsList);
