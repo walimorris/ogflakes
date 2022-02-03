@@ -22,9 +22,9 @@ import java.util.*;
 public class OgCerealService  {
     private static final Logger logger = LoggerFactory.getLogger(OgCerealService.class);
 
-    private static final String CONTRIBUTOR = "contributor";
-    private static final String TRUE = "true";
-    private static final String ROOT = "/";
+    public static final String CONTRIBUTOR = "contributor";
+    public static final String TRUE = "true";
+    public static final String ROOT = "/";
 
     @Autowired
     private OgCerealRepository ogCerealRepository;

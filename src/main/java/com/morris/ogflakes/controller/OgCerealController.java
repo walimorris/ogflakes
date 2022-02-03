@@ -32,7 +32,7 @@ public class OgCerealController {
     private final OgCerealRepository ogCerealRepository;
 
     @Autowired
-    OgCerealService ogCerealService;
+    private OgCerealService ogCerealService;
 
     public OgCerealController(OgCerealRepository cerealRepository) {
         this.ogCerealRepository = cerealRepository;
