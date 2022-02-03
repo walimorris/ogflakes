@@ -48,15 +48,17 @@ class OgCerealServiceTest {
     private static final String TEST_DESCRIPTION_1 = "Some test text for cereal description member";
     private static final String TEST_DESCRIPTION_2 = "Some more test text for cereal description member";
     private static final String TEST_DESCRIPTION_3 = "Even more test text for cereal description member";
+    private static final String MULTI_PART_FORM_DATA = "multipart/form-data";
+    private static final String TEST_FILE_AS_STRING = "TEST_FILE";
 
     private static final MockMultipartFile TEST_IMAGE_FILE_1 = new MockMultipartFile("file", "TEST_IMAGE_FILE_1",
-            "multipart/form-data", "TEST_FILE".getBytes());
+            MULTI_PART_FORM_DATA, TEST_FILE_AS_STRING.getBytes());
 
     private static final MockMultipartFile TEST_IMAGE_FILE_2 = new MockMultipartFile("file", "TEST_IMAGE_FILE_2",
-            "multipart/form-data", "TEST_FILE".getBytes());
+            MULTI_PART_FORM_DATA, TEST_FILE_AS_STRING.getBytes());
 
     private static final MockMultipartFile TEST_IMAGE_FILE_3 = new MockMultipartFile("file", "TEST_IMAGE_FILE_3",
-            "multipart/form-data", "TEST_FILE".getBytes());
+            MULTI_PART_FORM_DATA, TEST_FILE_AS_STRING.getBytes());
 
     @MockBean
     private OgCerealService mockOgCerealService;

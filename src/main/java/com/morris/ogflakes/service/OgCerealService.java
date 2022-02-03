@@ -1,6 +1,9 @@
 package com.morris.ogflakes.service;
 
+import com.amazonaws.services.sns.AmazonSNSClient;
+import com.amazonaws.services.sns.model.PublishRequest;
 import com.morris.ogflakes.model.OgCereal;
+import com.morris.ogflakes.model.SnsEmail;
 import com.morris.ogflakes.repository.OgCerealRepository;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -9,6 +12,7 @@ import org.bson.types.Binary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,8 +30,14 @@ public class OgCerealService  {
     public static final String TRUE = "true";
     public static final String ROOT = "/";
 
+    @Value("${admin-topic-arn}")
+    private String topicArn;
+
     @Autowired
     private OgCerealRepository ogCerealRepository;
+
+    @Autowired
+    private AmazonSNSClient amazonSNSClient;
 
     /**
      * Add {@link OgCereal} object to repository with name, description, and image.
@@ -44,6 +54,7 @@ public class OgCerealService  {
             logger.error("Error adding image to repository: {}", e.getMessage());
         }
         ogCerealRepository.insert(ogCereal);
+        publishAdminSns(ogCereal);
     }
 
     /**
@@ -159,5 +170,14 @@ public class OgCerealService  {
             }
         }
         return true;
+    }
+
+    private void publishAdminSns(OgCereal ogCereal) {
+        String subject = String.format("New '%s' cereal uploaded OG!", ogCereal.getName());
+        String message = String.format("Here's the description: '%s'\n\nUpload at your leisure.\n\n" +
+                "Stay OG", ogCereal.getDescription());
+        SnsEmail snsEmail = new SnsEmail(subject, message);
+        final PublishRequest publishRequest = new PublishRequest(topicArn, snsEmail.getMessage(), snsEmail.getSubject());
+        amazonSNSClient.publish(publishRequest);
     }
 }
