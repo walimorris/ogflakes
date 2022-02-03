@@ -18,6 +18,7 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import javax.servlet.http.Cookie;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,9 +32,15 @@ import static org.mockito.Mockito.when;
 class OgCerealServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(OgCerealServiceTest.class);
 
-    private static final String TEST_CEREAL_1 = "Honey Nut Cheerios";
-    private static final String TEST_CEREAL_2 = "Captain Crunch";
-    private static final String TEST_CEREAL_3 = "Honey Smacks";
+    private static final String uppercaseQuery = "Uppercase";
+
+    private static final String TEST_CEREAL_UPPERCASE_1 = "Honey";
+    private static final String TEST_CEREAL_UPPERCASE_2 = "Captain";
+    private static final String TEST_CEREAL_UPPERCASE_3 = "Smacks";
+
+    private static final String TEST_CEREAL_LOWERCASE_1 = "honey";
+    private static final String TEST_CEREAL_LOWERCASE_2 = "captain";
+    private static final String TEST_CEREAL_LOWERCASE_3 = "smacks";
 
     private static final Cookie TEST_COOKIE_1 = new Cookie("test_cookie1", "test_cookie1_value1");
     private static final Cookie TEST_COOKIE_2 = new Cookie("text_cookie2", "text_cookie2_value2");
@@ -58,6 +65,9 @@ class OgCerealServiceTest {
     private OgCerealRepository mockOgCerealRepository;
 
     private List<OgCereal> ogCereals;
+
+    // also acts as uppercase cereal lists - reuse this
+    private List<OgCereal> lowercaseCerealsList;
     private Cookie contributorCookie;
     private Cookie[] testCookies1;
     private Cookie[] testCookies2;
@@ -67,6 +77,18 @@ class OgCerealServiceTest {
         contributorCookie = new Cookie(OgCerealService.CONTRIBUTOR, OgCerealService.TRUE);
         testCookies1 = new Cookie[]{contributorCookie, TEST_COOKIE_1, TEST_COOKIE_2};
         testCookies2 = new Cookie[]{TEST_COOKIE_1, TEST_COOKIE_2};
+
+        ogCereals = Arrays.asList(
+                new OgCereal(TEST_CEREAL_UPPERCASE_1, TEST_DESCRIPTION_1),
+                new OgCereal(TEST_CEREAL_UPPERCASE_2, TEST_DESCRIPTION_2),
+                new OgCereal(TEST_CEREAL_UPPERCASE_3, TEST_DESCRIPTION_3)
+        );
+
+        lowercaseCerealsList = Arrays.asList(
+                new OgCereal(TEST_CEREAL_LOWERCASE_1, TEST_DESCRIPTION_1),
+                new OgCereal(TEST_CEREAL_LOWERCASE_2, TEST_DESCRIPTION_2),
+                new OgCereal(TEST_CEREAL_LOWERCASE_3, TEST_DESCRIPTION_3)
+        );
     }
 
     @AfterEach
@@ -74,6 +96,7 @@ class OgCerealServiceTest {
         contributorCookie = null;
         testCookies1 = null;
         testCookies2 = null;
+        ogCereals = null;
     }
 
     @Test
@@ -83,28 +106,35 @@ class OgCerealServiceTest {
 
     @Test
     void addOgCereal() throws IOException {
-        OgCereal ogCereal1 = new OgCereal(TEST_CEREAL_1, TEST_DESCRIPTION_1);
+        OgCereal ogCereal1 = new OgCereal(TEST_CEREAL_UPPERCASE_1, TEST_DESCRIPTION_1);
         ogCereal1.setImage(new Binary(BsonBinarySubType.BINARY, TEST_IMAGE_FILE_1.getBytes()));
         when(mockOgCerealRepository.insert(any(OgCereal.class))).thenReturn(ogCereal1);
         OgCereal result = mockOgCerealRepository.insert(ogCereal1);
 
-        assertEquals(result.getName(), TEST_CEREAL_1);
+        assertEquals(result.getName(), TEST_CEREAL_UPPERCASE_1);
         assertEquals(result.getDescription(), TEST_DESCRIPTION_1);
         assertEquals(result.getCount(), 1);
         assertNotNull(result.getImage());
     }
 
     @Test
-    void getCaseOptimizedResultsList() {
-
+    void getCaseOptimizedResultsListLowercase() {
     }
 
+   /*
+    Validation occurs outside of site, handled by DBA. All cereals are invalidated as
+    there's no way to handle validation programmatically and this feature is sealed.
+    */
     @Test
     void isEmptyOrNonValidatedResults() {
+        assertTrue(ogCereals.isEmpty() || !allResultsAreValidated(ogCereals));
     }
 
     @Test
     void getAllResults() {
+        when(mockOgCerealRepository.findAll()).thenReturn(ogCereals);
+        List<OgCereal> results = mockOgCerealRepository.findAll();
+        assertFalse(results.isEmpty());
     }
 
     @Test
@@ -135,5 +165,14 @@ class OgCerealServiceTest {
             }
         }
         return containsContributorCookie;
+    }
+
+    private boolean allResultsAreValidated(List<OgCereal> results) {
+        for (OgCereal cereal : results) {
+            if (!cereal.getIsValidated()) {
+                return false;
+            }
+        }
+        return true;
     }
 }
