@@ -65,3 +65,27 @@
     max-width: 200px;
     max-height: 300px;
 }
+
+.pagelink_container {
+    display: flex;
+    justify-content: center;
+    float: left;
+    width: 100%;
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+.pagination {
+    float: left;
+}
+
+.pagination a:hover {
+    text-decoration: underline !important;
+    color: #00008b;
+}
+
+.pageLink {
+    padding-right: 15px;
+    color: #0000ff;
+    text-decoration: none;
+}

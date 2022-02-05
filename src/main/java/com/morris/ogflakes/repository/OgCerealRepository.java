@@ -1,16 +1,19 @@
 package com.morris.ogflakes.repository;
 
 import com.morris.ogflakes.model.OgCereal;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
-
-import java.util.List;
 
 public interface OgCerealRepository extends MongoRepository<OgCereal, String> {
 
     @Query("{'name' : {'$regex' : ?0 }}")
-    List<OgCereal> findByNameRegex(String name);
+    Page<OgCereal> findByNameRegex(String name, Pageable pageable);
 
     @Query("{ 'name' : ?0 }")
-    List<OgCereal> findByName(String name);
+    Page<OgCereal> findByName(String name, Pageable pageable);
+
+    @Override
+    Page<OgCereal> findAll(Pageable pageable);
 }

@@ -39,5 +39,11 @@
         </div>
     </div>
 </div>
+<div th:unless="${#lists.isEmpty(ogFlakesList)}" class="pagelink_container">
+    <section class="pagination" th:each="i: ${#numbers.sequence(0, totalPages - 1)}">
+        <a class="pageLink" th:if="${#strings.isEmpty(q)}" th:href="@{/ogcereal/showcase(page=${i})}" th:text="${i} + 1"></a>
+        <a class="pageLink" th:if="not ${#strings.isEmpty(q)}" th:href="@{/ogcereal/showcase(q=${q}, page=${i})}" th:text="${i} + 1"></a>
+    </section>
+</div>
 </body>
 </html>

@@ -120,7 +120,7 @@ class OgCerealServiceTest {
     }
 
     @Test
-    void getCaseOptimizedResultsListLowercase() {
+    void getQueryResults() {
     }
 
    /*

@@ -5,14 +5,14 @@ import com.amazonaws.services.sns.model.PublishRequest;
 import com.morris.ogflakes.model.OgCereal;
 import com.morris.ogflakes.model.SnsEmail;
 import com.morris.ogflakes.repository.OgCerealRepository;
-import org.apache.commons.collections4.ListUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,7 +20,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class OgCerealService  {
@@ -29,6 +32,9 @@ public class OgCerealService  {
     public static final String CONTRIBUTOR = "contributor";
     public static final String TRUE = "true";
     public static final String ROOT = "/";
+    public static final String CEREALS = "cereals";
+    public static final String TOTAL_ITEMS = "totalItems";
+    public static final String TOTAL_PAGES = "totalPages";
 
     @Value("${admin-topic-arn}")
     private String topicArn;
@@ -66,21 +72,31 @@ public class OgCerealService  {
      * @param query {@link String} keyword/term for repo search
      * @return {@link List<OgCereal>}
      */
-    public List<OgCereal> getCaseOptimizedResultsList(String query) {
-        List<OgCereal> maxQueryResultsList;
-        if (StringUtils.isAllLowerCase(query.substring(0,1))) {
-            query = StringUtils.join(query.substring(0,1).toUpperCase(), query.substring(1));
-        }
-        List<OgCereal> upperCaseQueryResultsList = ogCerealRepository.findByNameRegex(query);
-        List<OgCereal> lowerCaseQueryResultsList = ogCerealRepository.findByNameRegex(StringUtils.lowerCase(query));
+    public Map<String, Object> getQueryResults(String query, Pageable pageable) {
+        Map<String, Object> results = new HashMap<>();
 
-        if (!upperCaseQueryResultsList.isEmpty() && !lowerCaseQueryResultsList.isEmpty()) {
-            maxQueryResultsList = joinShowcaseQueryResultsLists(upperCaseQueryResultsList, lowerCaseQueryResultsList);
-        } else {
-            maxQueryResultsList = upperCaseQueryResultsList.size() > lowerCaseQueryResultsList.size() ?
-                    upperCaseQueryResultsList : lowerCaseQueryResultsList;
-        }
-        return maxQueryResultsList;
+        Page<OgCereal> pageResults = ogCerealRepository.findByNameRegex(query, pageable);
+        List<OgCereal> queryResultsList = pageResults.getContent();
+
+        results.put(CEREALS, queryResultsList);
+        results.put(TOTAL_ITEMS, pageResults.getTotalElements());
+        results.put(TOTAL_PAGES, pageResults.getTotalPages());
+
+        return results;
+    }
+
+    /**
+     * Get all (validated) results from repo.
+     *
+     * @return {@link List<OgCereal>} validated object results
+     */
+    public Map<String, Object> getAllResults(Pageable pageable) {
+        Map<String, Object> results = new HashMap<>();
+        Page<OgCereal> pageResults = ogCerealRepository.findAll(pageable);
+        results.put(CEREALS, pageResults.getContent());
+        results.put(TOTAL_PAGES, pageResults.getTotalPages());
+        results.put(TOTAL_ITEMS, pageResults.getTotalElements());
+        return results;
     }
 
     /**
@@ -104,15 +120,6 @@ public class OgCerealService  {
      */
     public boolean isEmptyOrAllNonValidatedResults(List<OgCereal> results) {
         return (results.isEmpty() || allResultsAreNotValidated(results));
-    }
-
-    /**
-     * Get all (validated) results from repo.
-     *
-     * @return {@link List<OgCereal>} validated object results
-     */
-    public List<OgCereal> getAllResults() {
-        return ogCerealRepository.findAll();
     }
 
     /**
@@ -142,17 +149,6 @@ public class OgCerealService  {
      */
     public Optional<OgCereal> getOgCereal(String id) {
         return ogCerealRepository.findById(id);
-    }
-
-    /**
-     * Joins the results of two {@link List<OgCereal>}.
-     *
-     * @param resultsList1 {@link List<OgCereal>} list 1.
-     * @param resultsList2 {@link List<OgCereal>} list 2.
-     * @return joined {@link List<OgCereal>} list.
-     */
-    private List<OgCereal> joinShowcaseQueryResultsLists(List<OgCereal> resultsList1, List<OgCereal>resultsList2) {
-        return new ArrayList<>(new HashSet<>(ListUtils.union(resultsList1, resultsList2)));
     }
 
     /**

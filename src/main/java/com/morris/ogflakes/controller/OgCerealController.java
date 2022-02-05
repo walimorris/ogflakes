@@ -7,6 +7,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -24,6 +27,7 @@ public class OgCerealController {
     private static final Logger logger = LoggerFactory.getLogger(OgCerealController.class);
 
     private static final String RESULTS = "results";
+    private static final String QUERY = "q";
     private static final String EMPTY = "empty";
     private static final String OG_FLAKES_LIST = "ogFlakesList";
     private static final String MESSAGE_1 = "message1";
@@ -44,24 +48,30 @@ public class OgCerealController {
     }
 
     @GetMapping("/showcase")
-    public String getOgCereal(@RequestParam(value = "q", required = false) String query, Model model,
-                              HttpServletRequest request) {
+    public String getOgCereal(@RequestParam(value = "q", required = false) String query,
+                              @RequestParam(value = "page") Optional<Integer> page, Model model, HttpServletRequest request) {
+        Map<String, Object> results;
         List<OgCereal> maxQueryResultsList;
+
+        // 5 items per page
+        Pageable pageable = PageRequest.of(page.orElse(0), 5);
         if (StringUtils.isNotEmpty(query)) {
-            maxQueryResultsList = ogCerealService.getCaseOptimizedResultsList(query);
+            results = ogCerealService.getQueryResults(query, pageable);
+            maxQueryResultsList = (List<OgCereal>) results.get(OgCerealService.CEREALS);
             if (ogCerealService.isEmptyOrAllNonValidatedResults(maxQueryResultsList)) {
                 model.addAttribute(RESULTS, EMPTY);
             }
-            model.addAttribute(OG_FLAKES_LIST, maxQueryResultsList);
         } else {
-            // return all cereal options, when user submits empty query or page load
-            maxQueryResultsList = ogCerealService.getAllResults();
-            model.addAttribute(OG_FLAKES_LIST, maxQueryResultsList);
+            Pageable allPageable = PageRequest.of(page.orElse(0), 5);
+            results = ogCerealService.getAllResults(allPageable);
+            maxQueryResultsList = (List<OgCereal>) results.get(OgCerealService.CEREALS);
         }
+        model.addAttribute(QUERY, query);
+        model.addAttribute(OgCerealService.TOTAL_PAGES, results.get(OgCerealService.TOTAL_PAGES));
+        model.addAttribute(OG_FLAKES_LIST, maxQueryResultsList);
 
         // add contributor message if contributor cookie exists
         if (ogCerealService.isContributor(request)) {
-            // add dynamic text on successful upload on showcase redirect
             StringBuilder message1 = new StringBuilder("You've contributed to OGFlakes, no worries there's no limit.");
             StringBuilder message2 = new StringBuilder("Either way, we appreciate the love!");
             model.addAttribute(MESSAGE_1, message1);
