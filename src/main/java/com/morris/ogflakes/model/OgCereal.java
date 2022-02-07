@@ -2,13 +2,13 @@ package com.morris.ogflakes.model;
 
 import org.bson.internal.Base64;
 import org.bson.types.Binary;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Document("cereal")
 public class OgCereal {
 
-    @MongoId
+    @Id
     private String id;
 
     private String name;

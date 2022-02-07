@@ -2,11 +2,13 @@ package com.morris.ogflakes.service;
 
 import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sns.model.PublishRequest;
+import com.amazonaws.services.sns.model.ResourceNotFoundException;
 import com.morris.ogflakes.model.OgCereal;
 import com.morris.ogflakes.model.SnsEmail;
 import com.morris.ogflakes.repository.OgCerealRepository;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,8 +149,11 @@ public class OgCerealService  {
      * @param id {@link OgCereal} id
      * @return {@link Optional<OgCereal>} object.
      */
-    public Optional<OgCereal> getOgCereal(String id) {
-        return ogCerealRepository.findById(id);
+    public OgCereal getOgCereal(String id) {
+        if (ogCerealRepository.findById(String.valueOf(new ObjectId(id))).isPresent()) {
+            return ogCerealRepository.findById(String.valueOf(new ObjectId(id))).get();
+        }
+        throw new ResourceNotFoundException("Unable to find OgCereal with id: " + id);
     }
 
     /**

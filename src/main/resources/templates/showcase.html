@@ -29,11 +29,11 @@
                     <img id="cerealBoxImage" th:alt="${cereal.getImage}" th:src="'data:image/png;base64,' + ${cereal.getImage()}"/>
                 </div>
                 <div id="cerealUpvote">
-                    <form th:action="@{|/ogcereal/showcase/updateticker?id=${cereal.getId}&count=${cereal.getCount + 1}|}" method="post">
-                        <input type="hidden"/>
-                        <button style="background: transparent; outline: none; border: none;" type="submit" value="put"><i class="uptick"></i></button>
-                    </form>
-                    <h2 id="uptickCountId" class="uptickCount" th:text="${cereal.getCount}"></h2>
+                    <button th:id="'upvoteButton' + ${ogFlakesList.indexOf(cereal) + 1}"
+                            th:data-id="${cereal.getId()}"
+                            style="background: transparent; outline: none; border: none;"><i class="uptick"></i></button>
+
+                    <h2 th:id="'uptickCount' + ${ogFlakesList.indexOf(cereal) + 1}" class="uptickCount" th:text="${cereal.getCount}"></h2>
                 </div>
             </div>
         </div>
@@ -45,5 +45,6 @@
         <a class="pageLink" th:if="not ${#strings.isEmpty(q)}" th:href="@{/ogcereal/showcase(q=${q}, page=${i})}" th:text="${i} + 1"></a>
     </section>
 </div>
+<script src="/javascripts/showcaseActions.js"></script>
 </body>
 </html>

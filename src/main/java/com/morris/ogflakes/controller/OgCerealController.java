@@ -9,10 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -80,33 +82,12 @@ public class OgCerealController {
         return "showcase";
     }
 
-    @GetMapping("/showcase/{id}")
-    public String getOgCerealById(@PathVariable String id, Model model) {
-        logger.info("Searching db for {}", id);
-        Optional<OgCereal> ogCereal = ogCerealService.getOgCereal(id);
-        if (ogCereal.isPresent()) {
-            logger.info("ogCereal is present: {}", ogCereal);
-        }
-        return "showcase";
-    }
-
     @PostMapping("/add")
     public String postOgCereal(@RequestParam("name") String name, @RequestParam("image") MultipartFile image,
                                  @RequestParam("description") String description, HttpServletResponse response) {
 
         ogCerealService.addOgCereal(name, description, image);
         ogCerealService.addContributorCookie(response);
-        return "redirect:/ogcereal/showcase";
-    }
-
-    @PostMapping(value = "/ogcereal/showcase/updateticker")
-    public String updateOgCerealTickerCount(@RequestParam("id") String id, @RequestParam("count") String count) throws ResourceNotFoundException {
-        Optional<OgCereal> cereal = ogCerealRepository.findById(id);
-        if (cereal.isPresent()) {
-            OgCereal ogCereal = cereal.get();
-            ogCereal.setCount(Integer.parseInt(count));
-            ogCerealRepository.save(ogCereal);
-        }
         return "redirect:/ogcereal/showcase";
     }
 }
