@@ -8,7 +8,7 @@
     height: 300px;
     padding-top: 60px;
     padding-bottom: 60px;
-    border-bottom: 2px dotted #d3d3d3;
+    border-bottom: 1px dotted #d3d3d3;
 }
 
 #cerealImageContainer {
@@ -38,6 +38,34 @@
 
 .uptick:hover {
     cursor: pointer;
+}
+
+.contributionButton {
+    height: 35px;
+    width: 90px;
+    background-color: #7b68ee;
+}
+
+.emptyResults {
+    text-align: center;
+    padding-top: 25px;
+}
+
+.contributorContainer {
+    text-align: center;
+    border-bottom: 1px dotted #d3d3d3;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.noResultsText {
+    color: rgb(102, 102, 102);
+    font-family: system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+}
+
+.contributorText {
+    color: rgb(102, 102, 102);
+    font-family: system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
 }
 
 .uptickCount {
@@ -80,6 +108,11 @@
 }
 
 .pagination a:hover {
+    text-decoration: underline !important;
+    color: #00008b;
+}
+
+.pageLink a:visited {
     text-decoration: underline !important;
     color: #00008b;
 }

@@ -10,12 +10,17 @@
 <div th:replace="fragments/navbar"></div>
 <!-- message2 is not empty if message1 is also not empty, using message2 would be safe in this case
      as they are created and meant to be together -->
-<div th:unless="${#strings.isEmpty(message1)}">
-    <p th:text="${message1}"></p>
-    <p th:text="${message2}"></p>
+<div class="contributorContainer" th:unless="${#strings.isEmpty(message1)}">
+    <p class="contributorText" th:text="${message1}"></p>
+    <p class="contributorText" th:text="${message2}"></p>
 </div>
-<div th:if="${results == 'empty'}">
-    <p> No Results &#129488; </p>
+<div class="emptyResults" th:if="${results == 'empty'}">
+    <p><b>Lame! No Results</b> &#129488;</p><br/>
+    <p class="noResultsText"> Have you considered contributing?</p>
+    <p class="noResultsText"> We pride ourselves in hearing from everyone on the block.</p>
+    <form action="/ogcereal/contribute">
+        <button class="contributionButton" type="submit">Contribute</button>
+    </form>
 </div>
 <div th:unless="${#lists.isEmpty(ogFlakesList)}">
     <div th:each="cereal : ${ogFlakesList}">
@@ -26,14 +31,19 @@
                     <p class="cerealDescription" th:text="${cereal.getDescription}"></p>
                 </div>
                 <div id="cerealImageContainer">
-                    <img id="cerealBoxImage" th:alt="${cereal.getImage}" th:src="'data:image/png;base64,' + ${cereal.getImage()}"/>
+                    <img id="cerealBoxImage" th:alt="${cereal.getImage}"
+                         th:src="'data:image/png;base64,' + ${cereal.getImage()}"/>
                 </div>
                 <div id="cerealUpvote">
                     <button th:id="'upvoteButton' + ${ogFlakesList.indexOf(cereal) + 1}"
                             th:data-id="${cereal.getId()}"
-                            style="background: transparent; outline: none; border: none;"><i class="uptick"></i></button>
+                            style="background: transparent; outline: none; border: none;">
+                        <i class="uptick"></i>
+                    </button>
 
-                    <h2 th:id="'uptickCount' + ${ogFlakesList.indexOf(cereal) + 1}" class="uptickCount" th:text="${cereal.getCount}"></h2>
+                    <h2 th:id="'uptickCount' + ${ogFlakesList.indexOf(cereal) + 1}"
+                        class="uptickCount"
+                        th:text="${cereal.getCount}"></h2>
                 </div>
             </div>
         </div>
@@ -41,8 +51,13 @@
 </div>
 <div th:unless="${#lists.isEmpty(ogFlakesList)}" class="pagelink_container">
     <section class="pagination" th:each="i: ${#numbers.sequence(0, totalPages - 1)}">
-        <a class="pageLink" th:if="${#strings.isEmpty(q)}" th:href="@{/ogcereal/showcase(page=${i})}" th:text="${i} + 1"></a>
-        <a class="pageLink" th:if="not ${#strings.isEmpty(q)}" th:href="@{/ogcereal/showcase(q=${q}, page=${i})}" th:text="${i} + 1"></a>
+        <a class="pageLink" th:if="${#strings.isEmpty(q)}"
+           th:href="@{/ogcereal/showcase(page=${i})}"
+           th:text="${i} + 1"></a>
+
+        <a class="pageLink" th:if="not ${#strings.isEmpty(q)}"
+           th:href="@{/ogcereal/showcase(q=${q}, page=${i})}"
+           th:text="${i} + 1"></a>
     </section>
 </div>
 <script src="/javascripts/showcaseActions.js"></script>

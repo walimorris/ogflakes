@@ -35,6 +35,9 @@ public class OgCerealController {
     private static final String MESSAGE_1 = "message1";
     private static final String MESSAGE_2 = "message2";
 
+    private static final String CONTRIBUTOR_MESSAGE_1 = "You've contributed to OGFlakes, but there's no limit.";
+    private static final String CONTRIBUTOR_MESSAGE_2 = "We appreciate the love!";
+
     private final OgCerealRepository ogCerealRepository;
 
     @Autowired
@@ -74,8 +77,8 @@ public class OgCerealController {
 
         // add contributor message if contributor cookie exists
         if (ogCerealService.isContributor(request)) {
-            StringBuilder message1 = new StringBuilder("You've contributed to OGFlakes, no worries there's no limit.");
-            StringBuilder message2 = new StringBuilder("Either way, we appreciate the love!");
+            StringBuilder message1 = new StringBuilder(CONTRIBUTOR_MESSAGE_1);
+            StringBuilder message2 = new StringBuilder(CONTRIBUTOR_MESSAGE_2);
             model.addAttribute(MESSAGE_1, message1);
             model.addAttribute(MESSAGE_2, message2);
         }
