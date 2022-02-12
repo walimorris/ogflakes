@@ -13,7 +13,7 @@ document.addEventListener('click', e => {
         ticker.innerHTML = count + 1;
 
         // update ticker count
-        putUpdateTickerCount(targetParent, count + 1);
+        patchTickerCount(targetParent, count + 1);
     }
 
     /**
@@ -23,7 +23,7 @@ document.addEventListener('click', e => {
      * @param element uptick button
      * @param count   the new count
      */
-    function putUpdateTickerCount(element, count) {
+    function patchTickerCount(element, count) {
         let id = element.getAttribute('data-id');
         let data = {count: count};
 
