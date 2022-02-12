@@ -61,4 +61,9 @@
     border: none;
     background-color: #7b68ee;
     margin-left: -25px;
+    color: #ffffff;
+}
+
+.ogcereal_searchbutton:hover {
+    filter: brightness(90%);
 }

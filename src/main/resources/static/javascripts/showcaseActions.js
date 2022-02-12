@@ -19,6 +19,7 @@ document.addEventListener('click', e => {
     /**
      * Get the data-id attribute from uptickCounter button element and updates
      * count in repository.
+     *
      * @param element uptick button
      * @param count   the new count
      */

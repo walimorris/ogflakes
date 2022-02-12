@@ -18,8 +18,10 @@
                name="name" />
         <div class="dropzoneContainer">
             <div id="dropzone">
-                <span class="dropzone_select">Drop cereals here or click to upload</span>
-                <input class="dropzone_input" required="required"
+                <span class="dropzone_select" id="dropzone_select">Click to upload</span>
+                <input class="dropzone_input"
+                       id="dropzone_input"
+                       required="required"
                        type="file"
                        name="image"
                        accept="image/*" />
@@ -33,8 +35,11 @@
                       cols="50"
                       name="description"></textarea>
         </label><br/>
-        <button type="submit" value="Upload">Submit</button>
+        <button class="contribution_button" type="submit" value="Upload">Submit</button>
     </form>
+</div>
+<div class="upload_rules">
+
 </div>
 
 <script src="/javascripts/imagedrops.js"></script>
