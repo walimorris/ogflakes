@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.morris.ogflakes.OgflakesApplicationTests
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.414 s - in com.morris.ogflakes.OgflakesApplicationTests
