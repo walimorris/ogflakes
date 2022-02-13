@@ -1,0 +1,10 @@
+com/morris/ogflakes/controller/OgCerealController.class
+com/morris/ogflakes/service/OgCerealService.class
+com/morris/ogflakes/controller/HomeController.class
+com/morris/ogflakes/model/OgCereal.class
+com/morris/ogflakes/service/HomeControllerService.class
+com/morris/ogflakes/config/AwsSnsConfig.class
+com/morris/ogflakes/config/OgFlakesSecurityConfig.class
+com/morris/ogflakes/repository/OgCerealRepository.class
+com/morris/ogflakes/OgflakesApplication.class
+com/morris/ogflakes/model/SnsEmail.class
